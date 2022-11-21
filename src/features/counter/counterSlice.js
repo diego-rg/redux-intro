@@ -1,9 +1,9 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchCount } from './counterAPI';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { fetchCount } from "./counterAPI";
 
 const initialState = {
   value: 0,
-  status: 'idle',
+  status: "idle",
 };
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -12,7 +12,7 @@ const initialState = {
 // code can then be executed and other actions can be dispatched. Thunks are
 // typically used to make async requests.
 export const incrementAsync = createAsyncThunk(
-  'counter/fetchCount',
+  "counter/fetchCount",
   async (amount) => {
     const response = await fetchCount(amount);
     // The value we return becomes the `fulfilled` action payload
@@ -20,10 +20,13 @@ export const incrementAsync = createAsyncThunk(
   }
 );
 
+//Creating a slice requires a string name to identify the slice, an initial state value, and one or more reducer functions to
+//define how the state can be updated. Once a slice is created, we can export the generated Redux action creators and the reducer function for the whole slice.
+//Redux requires that we write all state updates immutably, by making copies of data and updating the copies. However, Redux Toolkit's createSlice
+//and createReducer APIs use Immer inside to allow us to write "mutating" update logic that becomes correct immutable updates.
 export const counterSlice = createSlice({
-  name: 'counter',
+  name: "counter",
   initialState,
-  // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     increment: (state) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
@@ -45,10 +48,10 @@ export const counterSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(incrementAsync.pending, (state) => {
-        state.status = 'loading';
+        state.status = "loading";
       })
       .addCase(incrementAsync.fulfilled, (state, action) => {
-        state.status = 'idle';
+        state.status = "idle";
         state.value += action.payload;
       });
   },
